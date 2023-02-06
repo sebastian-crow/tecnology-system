@@ -6,7 +6,8 @@ createApp({
 
     return {
       helloWorld: "Hello world",
-      anyo: '',
+      anyo: undefined,
+      mensaje: "",
       personas: [
         {
           nombre: "Camilo",
@@ -29,14 +30,14 @@ createApp({
           año: 1997
         },
       ],
-      intento:''
+      intento:undefined,
+      fin: false
     };
 
   },
   methods: {
 
     // tomar año de nacimiento
-
     anyoNacimiento() {
       const r = Math.floor(Math.random() * 5)
       this.anyo = this.personas[r].año;
@@ -44,7 +45,6 @@ createApp({
     },
 
     // pista
-
     pista() {
       const dif = this.anyo - this.intento;
       const prueba = dif * Math.sign(dif);
@@ -56,6 +56,48 @@ createApp({
         console.log('estas un poco lejos');
       }
       console.log(prueba);
+    },
+
+    /** 
+     Validamos si el año ingresado es mayor, menor o el correcto, además de que 
+     Se este dentro de los 7 intentos permitidos.
+    
+    **/
+    validar(){
+      if(this.intento <= 7){
+        //verificamos si es mayor o menor
+        if(this.anyo > this.persona.año || this.anyo < this.persona.año){
+          if(this.anyo > this.persona.año ){
+            this.mensaje = "el año ingresado es mayor"
+            console.log(mensaje)
+  
+          }else if(this.anyo < this.persona.año){
+            this.mensaje = "el año ingresado es menor"
+            console.log(this.mensaje)
+  
+          }
+          //aumentamos el contador de intentos
+          intento ++;
+
+        }
+        else{
+          //el año digitado es igual al escogido.
+          this.mensaje = "correcto"
+          console.log(this.mensaje)
+          //guardar el dato
+
+          //seteamos el intento
+          this.intento=0;
+
+        }
+        this.intento++;
+
+      }else{
+        //el intento es mayor a 7
+        this.mensaje = "juego terminado"
+        console.log(this.mensaje)
+        this.fin = true
+      }
     }
 
 
@@ -68,3 +110,5 @@ createApp({
 
   },
 }).mount("#root");
+
+
