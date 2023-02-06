@@ -8,6 +8,9 @@ createApp({
       helloWorld: "Hello world",
       anyo: undefined,
       mensaje: "",
+      nombre: "",
+      jugadores: [],
+      intentos: [],
       personas: [
         {
           nombre: "Camilo",
@@ -85,6 +88,12 @@ createApp({
           this.mensaje = "correcto"
           console.log(this.mensaje)
           //guardar el dato
+          this.intentos.push(
+            {nombre: this.persona.nombre, 
+              intento: this.intento
+            }
+          )
+
 
           //seteamos el intento
           this.intento=0;
@@ -96,7 +105,24 @@ createApp({
         //el intento es mayor a 7
         this.mensaje = "juego terminado"
         console.log(this.mensaje)
+        this.intentos.push(
+          {nombre: this.persona.nombre,  
+            intento: this.intento
+          }
+        )
+        this.jugadores.push(
+          {
+            nombre: this.nombre,
+            intentos: this.intentos
+          }
+        ) 
+
+        localStorage.setItem('registro', JSON.stringify(this.jugadores))
+
+        this.intento=0;
+        
         this.fin = true
+
       }
     }
 
@@ -106,7 +132,13 @@ createApp({
 
 
   mounted() {
-    console.log("App has been mounted");
+    let registro = JSON.parse(localStorage.getItem('registro'));
+
+    if(registro === null){
+      this.jugadores = []
+    }else{
+      this.jugadores = registro
+    }
 
   },
 }).mount("#root");
