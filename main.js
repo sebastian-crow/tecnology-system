@@ -33,9 +33,11 @@ createApp({
           año: 1997
         },
       ],
-      intento: undefined,
+      intento: 0,
       fin: false,
-      anyoIngresado: undefined
+      anyoIngresado: undefined,
+      pista: undefined,
+      persona: undefined
     };
 
   },
@@ -44,6 +46,7 @@ createApp({
     // tomar año de nacimiento aleatorio del array personas
     anyoNacimiento() {
       const r = Math.floor(Math.random() * 5)
+      this.persona = this.personas[r];
       this.anyo = this.personas[r].año;
       console.log(this.anyo);
     },
@@ -116,21 +119,28 @@ createApp({
     
     **/
     validar() {
-      if (this.intento <= 7) {
+      if (this.intento <= 6) {
         //verificamos si es mayor o menor
-        if (this.anyoIngresado > this.persona.año || this.anyoIngresado < this.persona.año) {
-          if (this.anyoIngresado > this.persona.año) {
+        console.log(this.anyoIngresado > this.anyo)
+        console.log(this.anyoIngresado < this.anyo)
+        if (this.anyoIngresado > this.anyo || this.anyoIngresado < this.anyo && this.intento < 1) {
+          if (this.anyoIngresado > this.anyo) {
             this.mensaje = "el año ingresado es mayor"
-            console.log(mensaje)
+            console.log(this.mensaje)
 
-          } else if (this.anyoIngresado < this.persona.año) {
+          } else if (this.anyoIngresado < this.anyo) {
             this.mensaje = "el año ingresado es menor"
             console.log(this.mensaje)
 
           }
           //aumentamos el contador de intentos
-          this.intento ++;
+          this.intento++;
 
+
+        } 
+        else if(this.intento > 1){
+          this.intento++;
+          this.darPista();
         }
         else {
           //el año digitado es igual al escogido.
@@ -139,8 +149,8 @@ createApp({
           //guardar el dato
           this.intentos.push(
             {
-              nombre: this.persona.nombre, 
-              intento: this.intento
+              'nombre': this.persona.nombre,
+              'intento': this.intento
             }
           )
 
@@ -148,29 +158,31 @@ createApp({
           this.intento = 0;
 
         }
-        
+
         this.intento++;
+
 
       } else {
         //el intento es mayor a 7
         this.mensaje = "juego terminado"
         console.log(this.mensaje)
         this.intentos.push(
-          {nombre: this.persona.nombre,  
-            intento: this.intento
+          {
+            'nombre': this.persona.nombre,
+            'intento': this.intento
           }
         )
         this.jugadores.push(
           {
-            nombre: this.nombre,
-            intentos: this.intentos
+            'nombre': this.persona.nombre,
+            'intentos': this.intentos
           }
-        ) 
+        )
 
         localStorage.setItem('registro', JSON.stringify(this.jugadores))
 
-        this.intento=0;
-        
+        this.intento = 0;
+
         this.fin = true
 
       }
@@ -184,9 +196,9 @@ createApp({
   mounted() {
     let registro = JSON.parse(localStorage.getItem('registro'));
 
-    if(registro === null){
+    if (registro === null) {
       this.jugadores = []
-    }else{
+    } else {
       this.jugadores = registro
     }
 
