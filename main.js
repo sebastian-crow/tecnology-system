@@ -80,7 +80,7 @@ createApp({
   
           }
           //aumentamos el contador de intentos
-          intento ++;
+          this.intento ++;
 
         }
         else{
@@ -94,11 +94,11 @@ createApp({
             }
           )
 
-
           //seteamos el intento
           this.intento=0;
 
         }
+        
         this.intento++;
 
       }else{
