@@ -130,7 +130,7 @@ createApp({
 
           }
           //aumentamos el contador de intentos
-          this.intento++;
+          this.intento ++;
 
         }
         else {
@@ -139,8 +139,7 @@ createApp({
           console.log(this.mensaje)
           //guardar el dato
           this.intentos.push(
-            {
-              nombre: this.persona.nombre,
+            {nombre: this.persona.nombre, 
               intento: this.intento
             }
           )
@@ -149,7 +148,7 @@ createApp({
           this.intento = 0;
 
         }
-
+        
         this.intento++;
 
       } else {
@@ -157,8 +156,7 @@ createApp({
         this.mensaje = "juego terminado"
         console.log(this.mensaje)
         this.intentos.push(
-          {
-            nombre: this.persona.nombre,
+          {nombre: this.persona.nombre,  
             intento: this.intento
           }
         )
@@ -167,12 +165,12 @@ createApp({
             nombre: this.nombre,
             intentos: this.intentos
           }
-        )
+        ) 
 
         localStorage.setItem('registro', JSON.stringify(this.jugadores))
 
-        this.intento = 0;
-
+        this.intento=0;
+        
         this.fin = true
 
       }
@@ -186,9 +184,9 @@ createApp({
   mounted() {
     let registro = JSON.parse(localStorage.getItem('registro'));
 
-    if (registro === null) {
+    if(registro === null){
       this.jugadores = []
-    } else {
+    }else{
       this.jugadores = registro
     }
 
