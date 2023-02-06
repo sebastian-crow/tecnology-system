@@ -49,7 +49,6 @@ createApp({
     },
 
     /*
-    pista 
     niño < 10
     adolecente < 17
     adulto >18 && <60
@@ -119,12 +118,12 @@ createApp({
     validar() {
       if (this.intento <= 7) {
         //verificamos si es mayor o menor
-        if (this.anyo > this.persona.año || this.anyo < this.persona.año) {
-          if (this.anyo > this.persona.año) {
+        if (this.anyoIngresado > this.persona.año || this.anyoIngresado < this.persona.año) {
+          if (this.anyoIngresado > this.persona.año) {
             this.mensaje = "el año ingresado es mayor"
             console.log(mensaje)
 
-          } else if (this.anyo < this.persona.año) {
+          } else if (this.anyoIngresado < this.persona.año) {
             this.mensaje = "el año ingresado es menor"
             console.log(this.mensaje)
 
@@ -139,7 +138,8 @@ createApp({
           console.log(this.mensaje)
           //guardar el dato
           this.intentos.push(
-            {nombre: this.persona.nombre, 
+            {
+              nombre: this.persona.nombre, 
               intento: this.intento
             }
           )
