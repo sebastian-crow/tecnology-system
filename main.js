@@ -8,6 +8,9 @@ createApp({
       helloWorld: "Hello world",
       anyo: undefined,
       mensaje: "",
+      nombre: "",
+      jugadores: [],
+      intentos: [],
       personas: [
         {
           nombre: "Camilo",
@@ -30,32 +33,82 @@ createApp({
           año: 1997
         },
       ],
-      intento:undefined,
-      fin: false
+      intento: undefined,
+      fin: false,
+      anyoIngresado: undefined
     };
 
   },
   methods: {
 
-    // tomar año de nacimiento
+    // tomar año de nacimiento aleatorio del array personas
     anyoNacimiento() {
       const r = Math.floor(Math.random() * 5)
       this.anyo = this.personas[r].año;
       console.log(this.anyo);
     },
 
-    // pista
-    pista() {
-      const dif = this.anyo - this.intento;
-      const prueba = dif * Math.sign(dif);
+    /*
+    pista 
+    niño < 10
+    adolecente < 17
+    adulto >18 && <60
+    anciano < 60
 
-      if(dif < 10){
-        console.log('estas cerca');
+    valida si el año ingresado por el usuario es el año generado aleatoriamente
+    si es asi se llamara la funcion anyoNacimiento()
+    de lo contrario se llamara la funcion darPista()
+    */
+    validarAcierto() {
+      if (this.anyoIngresado == this.anyo) {
+        console.log('acertaste');
+        this.anyoNacimiento();
+      } else {
+        this.darPista();
       }
-      else if(dif <= 10 && dif <20){
-        console.log('estas un poco lejos');
+    },
+
+
+    /*
+    Da una pista de acuerdo al año generado por la funcion anyoNacimiento()
+    y por el año ingresado por el usuario
+    */
+    darPista() {
+      const dif = this.anyo - this.anyoIngresado;
+      const rango = dif * Math.sign(dif);
+      const edad = 2023 - this.anyo;
+
+      if (edad <= 10) {
+        if (rango < 5) {
+          this.pista = 'Es un niño y estas muy cerca';
+        } else {
+          this.pista = 'Es un niño';
+        }
       }
-      console.log(prueba);
+
+      if (edad > 10 && edad <= 17) {
+        if (rango < 5) {
+          this.pista = 'Es un adolescente y estas muy cerca';
+        } else {
+          this.pista = 'Es un adolescente';
+        }
+      }
+
+      if (edad > 17 && edad < 60) {
+        if (rango < 5) {
+          this.pista = 'Es un adulto y estas muy cerca';
+        } else {
+          this.pista = 'Es un adulto';
+        }
+      }
+
+      if (edad >= 60) {
+        if (rango < 5) {
+          this.pista = 'Es un anciano y estas muy cerca';
+        } else {
+          this.pista = 'Es un anciano';
+        }
+      }
     },
 
     /** 
@@ -63,40 +116,65 @@ createApp({
      Se este dentro de los 7 intentos permitidos.
     
     **/
-    validar(){
-      if(this.intento <= 7){
+    validar() {
+      if (this.intento <= 7) {
         //verificamos si es mayor o menor
-        if(this.anyo > this.persona.año || this.anyo < this.persona.año){
-          if(this.anyo > this.persona.año ){
+        if (this.anyo > this.persona.año || this.anyo < this.persona.año) {
+          if (this.anyo > this.persona.año) {
             this.mensaje = "el año ingresado es mayor"
             console.log(mensaje)
-  
-          }else if(this.anyo < this.persona.año){
+
+          } else if (this.anyo < this.persona.año) {
             this.mensaje = "el año ingresado es menor"
             console.log(this.mensaje)
-  
+
           }
           //aumentamos el contador de intentos
-          intento ++;
+          this.intento++;
 
         }
-        else{
+        else {
           //el año digitado es igual al escogido.
           this.mensaje = "correcto"
           console.log(this.mensaje)
           //guardar el dato
+          this.intentos.push(
+            {
+              nombre: this.persona.nombre,
+              intento: this.intento
+            }
+          )
 
           //seteamos el intento
-          this.intento=0;
+          this.intento = 0;
 
         }
+
         this.intento++;
 
-      }else{
+      } else {
         //el intento es mayor a 7
         this.mensaje = "juego terminado"
         console.log(this.mensaje)
+        this.intentos.push(
+          {
+            nombre: this.persona.nombre,
+            intento: this.intento
+          }
+        )
+        this.jugadores.push(
+          {
+            nombre: this.nombre,
+            intentos: this.intentos
+          }
+        )
+
+        localStorage.setItem('registro', JSON.stringify(this.jugadores))
+
+        this.intento = 0;
+
         this.fin = true
+
       }
     }
 
@@ -106,9 +184,14 @@ createApp({
 
 
   mounted() {
-    console.log("App has been mounted");
+    let registro = JSON.parse(localStorage.getItem('registro'));
+
+    if (registro === null) {
+      this.jugadores = []
+    } else {
+      this.jugadores = registro
+    }
 
   },
 }).mount("#root");
-
 
