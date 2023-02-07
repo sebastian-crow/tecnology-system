@@ -26,6 +26,6 @@ MIT
 
 ---
 
-> [SebastianCrow](https://github.com/sebastian-crow) 
+> [SebastianCrow](https://github.com/sebastian-crow) <br> 
 > [Andersson Cordoba](https://github.com/andersson980114)  
 > [Camilo Burbano](https://github.com/CamiloBurbano82)
