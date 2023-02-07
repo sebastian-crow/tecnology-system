@@ -119,11 +119,17 @@ createApp({
     
     **/
     validar() {
+
       if (this.intento <= 6) {
+
+        if (this.anyoIngresado == undefined || this.anyoIngresado == '') {
+          this.mensaje = 'Debes ingresar un año';
+          return;
+        }
         //verificamos si es mayor o menor
-        console.log(this.anyoIngresado > this.anyo)
-        console.log(this.anyoIngresado < this.anyo)
-        if (this.anyoIngresado > this.anyo || this.anyoIngresado < this.anyo && this.intento < 1) {
+        // console.log(this.anyoIngresado > this.anyo)
+        // console.log(this.anyoIngresado < this.anyo)
+        if ((this.anyoIngresado > this.anyo || this.anyoIngresado < this.anyo) && this.intento < 1) {
           if (this.anyoIngresado > this.anyo) {
             this.mensaje = "el año ingresado es mayor"
             console.log(this.mensaje)
@@ -137,8 +143,8 @@ createApp({
           this.intento++;
 
 
-        } 
-        else if(this.intento > 1){
+        }
+        else if ((this.anyoIngresado > this.anyo || this.anyoIngresado < this.anyo) && this.intento > 1) {
           this.intento++;
           this.darPista();
         }
@@ -155,7 +161,26 @@ createApp({
           )
 
           //seteamos el intento
+          // this.intento = 0;
+
+          //guardar en el local storage despues del 5to año adivinado
+          console.log(this.intentos.length)
+          if (this.intentos.length > 4) {
+            this.jugadores.push(
+              {
+                'nombre': this.nombre,
+                'intentos': this.intentos
+              }
+            )
+            this.mensaje = " juego terminado"
+            console.log(this.mensaje)
+            localStorage.setItem('registro', JSON.stringify(this.jugadores))
+            this.intentos = []
+          }
+          //seteamos el intento
           this.intento = 0;
+          this.intentos = [];
+          this.anyoNacimiento()
 
         }
 
@@ -174,7 +199,7 @@ createApp({
         )
         this.jugadores.push(
           {
-            'nombre': this.persona.nombre,
+            'nombre': this.nombre,
             'intentos': this.intentos
           }
         )
@@ -182,7 +207,7 @@ createApp({
         localStorage.setItem('registro', JSON.stringify(this.jugadores))
 
         this.intento = 0;
-
+        this.intentos = [];
         this.fin = true
 
       }
