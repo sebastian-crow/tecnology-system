@@ -56,7 +56,6 @@ createApp({
     adolecente < 17
     adulto >18 && <60
     anciano < 60
-
     valida si el año ingresado por el usuario es el año generado aleatoriamente
     si es asi se llamara la funcion anyoNacimiento()
     de lo contrario se llamara la funcion darPista()
@@ -123,7 +122,7 @@ createApp({
         //verificamos si es mayor o menor
         console.log(this.anyoIngresado > this.anyo)
         console.log(this.anyoIngresado < this.anyo)
-        if (this.anyoIngresado > this.anyo || this.anyoIngresado < this.anyo && this.intento < 1) {
+        if ((this.anyoIngresado > this.anyo || this.anyoIngresado < this.anyo) && this.intento < 1) {
           if (this.anyoIngresado > this.anyo) {
             this.mensaje = "el año ingresado es mayor"
             console.log(this.mensaje)
@@ -138,7 +137,7 @@ createApp({
 
 
         } 
-        else if(this.intento > 1){
+        else if( (this.anyoIngresado > this.anyo || this.anyoIngresado < this.anyo) &&  this.intento > 1){
           this.intento++;
           this.darPista();
         }
@@ -154,8 +153,23 @@ createApp({
             }
           )
 
+          console.log(this.intentos.length )
+          if(this.intentos.length > 4){
+            this.jugadores.push(
+              {
+                'nombre': this.nombre,
+                'intentos': this.intentos
+              }
+            )
+            this.mensaje =" juego terminado"
+            console.log(this.mensaje)
+            localStorage.setItem('registro', JSON.stringify(this.jugadores))
+            this.intentos =[]
+          }
           //seteamos el intento
           this.intento = 0;
+          this.intentos=[];
+          this.anyoNacimiento()
 
         }
 
@@ -182,6 +196,7 @@ createApp({
         localStorage.setItem('registro', JSON.stringify(this.jugadores))
 
         this.intento = 0;
+        this.intentos=[];
 
         this.fin = true
 
@@ -203,5 +218,8 @@ createApp({
     }
 
   },
-}).mount("#root");
+}).mount("#root")
+
+
+
 
