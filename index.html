@@ -6,11 +6,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tecnology System Game</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+      charset="utf-8"
+    ></script>
   </head>
   <body>
     <div id="root">
-        <h1>{{ helloWorld }}</h1>
+      <div class="bg-gradient-to-tr from-fuchsia-300 to-sky-500">
+        <section
+          id="login"
+          class="p-4 flex flex-col justify-center min-h-screen max-w-md mx-auto"
+        >
+          <div class="p-6 bg-sky-100 rounded">
+            <div
+              class="relative flex items-center justify-center font-black m-3 mb-12"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-10 w-10 mr-3 text-red-600 animate-pulse"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <p class="absolute right-8 -top-1">{{ attempts.length }}</p>
+              <h1 class="tracking-wide text-3xl text-gray-900">Riddle Game</h1>
+            </div>
+            <div id="login_form" class="flex flex-col justify-center">
+              <div class="flex justify-between items-center mb-3">
+                <div class="inline-flex items-center self-start">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8 mr-3 bg-gradient-to-r from-pink-600 to-red-600 shadow-lg rounded p-1.5 text-gray-100"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M13 7H7v6h6V7z" />
+                    <path
+                      fill-rule="evenodd"
+                      d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <span class="font-bold text-gray-900">
+                    Año {{ selectYear }}</span
+                  >
+                </div>
+                <div
+                  data-tooltip-target="tooltip-default"
+                  class="inline-flex items-center self-start transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 text-blue-600 hover:text-blue-700 transition duration-150 ease-in-out"
+                  data-bs-toggle="tooltip"
+                  :title="hint"
+                >
+                  <img src="icons8-info.svg" alt="" width="30" />
+                  <div
+                    class="relative py-3 sm:max-w-xl sm:mx-auto"
+                    v-if="attempts.length >=2"
+                  >
+                    <div
+                      class="group cursor-pointer relative inline-block w-28 text-center text-black"
+                    >
+                      Pista
+                      <div
+                        class="opacity-0 w-28 bg-black text-white text-center text-xs rounded-lg py-2 absolute z-10 group-hover:opacity-100 bottom-full -left-1/2 ml-14 px-3 pointer-events-none"
+                      >
+                        {{ hint }}
+                        <svg
+                          class="absolute text-black h-2 w-full left-0 top-full"
+                          x="0px"
+                          y="0px"
+                          viewBox="0 0 255 255"
+                          xml:space="preserve"
+                        >
+                          <polygon
+                            class="fill-current"
+                            points="0,0 127.5,127.5 255,0"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <label class="text-sm font-medium">Año de nacimiento</label>
+              <select
+                v-model="selectYear"
+                name="selectYear"
+                id="selectYear"
+                class="mb-3 px-2 py-1.5 mb-3 mt-1 block w-full px-2 py-1.5 border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
+              ></select>
+              <!--    <input
+                v-model="birthdayAge"
+                class="mb-3 px-2 py-1.5 mb-3 mt-1 block w-full px-2 py-1.5 border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
+                type="number"
+                name="birthdayAge"
+                placeholder="Año"
+              /> -->
+              <div v-if="endGame">
+                <h1>Terminaste el juego</h1>
+                <label for=""
+                  >Ingresa tu nombre, gracias por completar el juego</label
+                >
+                <input type="text" name="user" />
+              </div>
+
+              <button
+                class="px-4 py-1.5 rounded-md shadow-lg bg-gradient-to-r from-pink-600 to-red-600 font-medium text-gray-100 block transition duration-300"
+              >
+                <span class="hidden">Sending :)</span>
+                <span v-on:click="checkMinorMajor">PLay</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
+    <!--  
+    <script src="utils.js"></script> -->
     <script src="main.js"></script>
   </body>
 </html>

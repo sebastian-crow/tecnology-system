@@ -1,11 +1,15 @@
 const { createApp } = Vue;
 
 createApp({
-
   data() {
-
     return {
       helloWorld: "Hello world",
+      selectYear: new Date().getFullYear(),
+      minor: "",
+      major: "",
+      attempts: [],
+      endGame: false,
+      hint: "Obten un pista despues de dos intentos",
       anyo: undefined,
       mensaje: "",
       nombre: "",
@@ -14,38 +18,36 @@ createApp({
       personas: [
         {
           nombre: "Camilo",
-          año: 2002
+          año: 2002,
         },
         {
           nombre: "José",
-          año: 2009
+          año: 2009,
         },
         {
           nombre: "Sebastian",
-          año: 1995
+          año: 1995,
         },
         {
           nombre: "Luis",
-          año: 2014
+          año: 2014,
         },
         {
           nombre: "Andersson",
-          año: 1997
+          año: 1997,
         },
       ],
       intento: 0,
       fin: false,
       anyoIngresado: undefined,
       pista: undefined,
-      persona: undefined
+      persona: undefined,
     };
-
   },
   methods: {
-
     // tomar año de nacimiento aleatorio del array personas
     anyoNacimiento() {
-      const r = Math.floor(Math.random() * 5)
+      const r = Math.floor(Math.random() * 5);
       this.persona = this.personas[r];
       this.anyo = this.personas[r].año;
       console.log(this.anyo);
@@ -63,13 +65,12 @@ createApp({
     */
     validarAcierto() {
       if (this.anyoIngresado == this.anyo) {
-        console.log('acertaste');
+        console.log("acertaste");
         this.anyoNacimiento();
       } else {
         this.darPista();
       }
     },
-
 
     /*
     Da una pista de acuerdo al año generado por la funcion anyoNacimiento()
@@ -82,33 +83,33 @@ createApp({
 
       if (edad <= 10) {
         if (rango < 5) {
-          this.pista = 'Es un niño y estas muy cerca';
+          this.pista = "Es un niño y estas muy cerca";
         } else {
-          this.pista = 'Es un niño';
+          this.pista = "Es un niño";
         }
       }
 
       if (edad > 10 && edad <= 17) {
         if (rango < 5) {
-          this.pista = 'Es un adolescente y estas muy cerca';
+          this.pista = "Es un adolescente y estas muy cerca";
         } else {
-          this.pista = 'Es un adolescente';
+          this.pista = "Es un adolescente";
         }
       }
 
       if (edad > 17 && edad < 60) {
         if (rango < 5) {
-          this.pista = 'Es un adulto y estas muy cerca';
+          this.pista = "Es un adulto y estas muy cerca";
         } else {
-          this.pista = 'Es un adulto';
+          this.pista = "Es un adulto";
         }
       }
 
       if (edad >= 60) {
         if (rango < 5) {
-          this.pista = 'Es un anciano y estas muy cerca';
+          this.pista = "Es un anciano y estas muy cerca";
         } else {
-          this.pista = 'Es un anciano';
+          this.pista = "Es un anciano";
         }
       }
     },
@@ -121,87 +122,96 @@ createApp({
     validar() {
       if (this.intento <= 6) {
         //verificamos si es mayor o menor
-        console.log(this.anyoIngresado > this.anyo)
-        console.log(this.anyoIngresado < this.anyo)
-        if (this.anyoIngresado > this.anyo || this.anyoIngresado < this.anyo && this.intento < 1) {
+        console.log(this.anyoIngresado > this.anyo);
+        console.log(this.anyoIngresado < this.anyo);
+        if (
+          this.anyoIngresado > this.anyo ||
+          (this.anyoIngresado < this.anyo && this.intento < 1)
+        ) {
           if (this.anyoIngresado > this.anyo) {
-            this.mensaje = "el año ingresado es mayor"
-            console.log(this.mensaje)
-
+            this.mensaje = "el año ingresado es mayor";
+            console.log(this.mensaje);
           } else if (this.anyoIngresado < this.anyo) {
-            this.mensaje = "el año ingresado es menor"
-            console.log(this.mensaje)
-
+            this.mensaje = "el año ingresado es menor";
+            console.log(this.mensaje);
           }
           //aumentamos el contador de intentos
           this.intento++;
-
-
-        } 
-        else if(this.intento > 1){
+        } else if (this.intento > 1) {
           this.intento++;
           this.darPista();
-        }
-        else {
+        } else {
           //el año digitado es igual al escogido.
-          this.mensaje = "correcto"
-          console.log(this.mensaje)
+          this.mensaje = "correcto";
+          console.log(this.mensaje);
           //guardar el dato
-          this.intentos.push(
-            {
-              'nombre': this.persona.nombre,
-              'intento': this.intento
-            }
-          )
+          this.intentos.push({
+            nombre: this.persona.nombre,
+            intento: this.intento,
+          });
 
           //seteamos el intento
           this.intento = 0;
-
         }
 
         this.intento++;
-
-
       } else {
         //el intento es mayor a 7
-        this.mensaje = "juego terminado"
-        console.log(this.mensaje)
-        this.intentos.push(
-          {
-            'nombre': this.persona.nombre,
-            'intento': this.intento
-          }
-        )
-        this.jugadores.push(
-          {
-            'nombre': this.persona.nombre,
-            'intentos': this.intentos
-          }
-        )
+        this.mensaje = "juego terminado";
+        console.log(this.mensaje);
+        this.intentos.push({
+          nombre: this.persona.nombre,
+          intento: this.intento,
+        });
+        this.jugadores.push({
+          nombre: this.persona.nombre,
+          intentos: this.intentos,
+        });
 
-        localStorage.setItem('registro', JSON.stringify(this.jugadores))
+        localStorage.setItem("registro", JSON.stringify(this.jugadores));
 
         this.intento = 0;
 
-        this.fin = true
-
+        this.fin = true;
       }
-    }
+    },
+    populateYears() {
+      var n = new Date().getFullYear();
+      var select = document.getElementById("selectYear");
+      for (var i = n; i >= 1900; i--) select.options.add(new Option(i, i));
+    },
+    checkMinorMajor() {
+      this.minor = parseInt(this.selectYear) < this.anyo ? true : false;
+      this.major = parseInt(this.selectYear) > this.anyo ? true : false;
+      this.attempts.push("attempt");
+      alert(`Minor: ${this.minor} Major: ${this.major}`);
 
+      // Hint if attempts > 2
+      if (this.attempts.length >= 2) {
+        this.hint = `Tú año de nacimiento está entre ${this.anyo - 10} y ${
+          this.anyo + 10
+        }`;
+      }
 
+      // Finalgame message
+      if (this.attempts.length >= 7) {
+        this.endGame = true;
+      }
 
+      console.log(this.attempts.length);
+      console.log("Working goo");
+    },
   },
-
-
   mounted() {
-    let registro = JSON.parse(localStorage.getItem('registro'));
+    let registro = JSON.parse(localStorage.getItem("registro"));
 
     if (registro === null) {
-      this.jugadores = []
+      this.jugadores = [];
     } else {
-      this.jugadores = registro
+      this.jugadores = registro;
     }
-
+    this.populateYears();
+    this.anyoNacimiento();
+    console.log(this.selectYear);
   },
 }).mount("#root");
-
