@@ -9,7 +9,8 @@ createApp({
       kilosB2: 230000,
       kilos: 0,
       base: 0,
-      mensaje: "a",
+      mensaje: "",
+      mensaje2: "",
       caja: "Caja de Bodega 1",
       inputKl: undefined,
       inputLb: undefined,
@@ -45,10 +46,11 @@ createApp({
     },
 
     vender() {
+      this.mensaje2 =""
       if (
-        this.inputGm != undefined ||
+       ( this.inputGm != undefined ||
         this.inputLb != undefined ||
-        this.inputKl != undefined
+        this.inputKl != undefined) 
       ) {
         this.totalVentas = 0;
         this.mensaje = "";
@@ -61,38 +63,52 @@ createApp({
         if (this.inputLb === undefined) {
           this.inputLb = 0;
         }
-        let lbKl = parseInt(this.inputLb) / 2;
-
+        
         //total kilos vendidos
         if (this.inputKl === undefined) {
           this.inputKl = 0;
         }
 
-        if (this.kilos > 0) {
-          this.kilos = (
-            this.kilos -
-            parseInt(this.inputKl) -
-            lbKl -
-            gmKl
-          ).toFixed(4);
-          this.ventas.push(parseInt(this.inputKl) + lbKl + gmKl);
+        if(this.inputGm >= 0 && this.inputLb >= 0 && this.inputKl >= 0) {
+          let lbKl = parseInt(this.inputLb) / 2; 
+          if (this.kilos > 0 && ( this.kilos -  parseInt(this.inputKl) - lbKl - gmKl) >= 0) {
+            this.kilos = (
+              this.kilos -
+              parseInt(this.inputKl) -
+              lbKl -
+              gmKl
+            ) 
+            this.ventas.push(parseInt(this.inputKl) + lbKl + gmKl);
+          }else{
+            this.mensaje2 = "El valor sobrepasa lo almacenado";
+            this.inputGm = undefined;
+            this.inputLb = undefined;
+            this.inputKl = undefined;
+          }
+  
+          if (this.selected) {
+            this.kilosB1 = this.kilos;
+            this.ventasB1 = this.ventas;
+          } else {
+            this.kilosB2 = this.kilos;
+            this.ventasB2 = this.ventas;
+          }
+  
+          this.totalV(this.ventas);
+          this.inputGm = undefined;
+          this.inputLb = undefined;
+          this.inputKl = undefined;
+          this.almacenado();
+
+        }else{
+          this.mensaje = "No se permiten valores negativos";
+          this.inputGm = undefined;
+          this.inputLb = undefined;
+          this.inputKl = undefined;
         }
 
-        if (this.selected) {
-          this.kilosB1 = this.kilos;
-          this.ventasB1 = this.ventas;
-        } else {
-          this.kilosB2 = this.kilos;
-          this.ventasB2 = this.ventas;
-        }
-
-        this.totalV(this.ventas);
-        this.inputGm = undefined;
-        this.inputLb = undefined;
-        this.inputKl = undefined;
-        this.almacenado();
       } else {
-        this.mensaje = "LLene los campos";
+        this.mensaje = "Llene los campos";
       }
     },
 
