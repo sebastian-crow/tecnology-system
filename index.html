@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./img/favicon.ico" />
     <title>Tecnology System Game</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -38,7 +39,11 @@
               <p class="absolute right-8 -top-1">{{ attempts.length }}</p>
               <h1 class="tracking-wide text-3xl text-gray-900">Riddle Game</h1>
             </div>
-            <div id="login_form" class="flex flex-col justify-center">
+            <div
+              id="login_form"
+              class="flex flex-col justify-center"
+              v-if="!endGame"
+            >
               <div class="flex justify-between items-center mb-3">
                 <div class="inline-flex items-center self-start">
                   <svg
@@ -64,7 +69,7 @@
                   data-bs-toggle="tooltip"
                   :title="hint"
                 >
-                  <img src="icons8-info.svg" alt="" width="30" />
+                  <img src="./img/hint.svg" alt="" width="30" />
                   <div
                     class="relative py-3 sm:max-w-xl sm:mx-auto"
                     v-if="attempts.length >=2"
@@ -101,34 +106,51 @@
                 id="selectYear"
                 class="mb-3 px-2 py-1.5 mb-3 mt-1 block w-full px-2 py-1.5 border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
               ></select>
-              <!--    <input
-                v-model="birthdayAge"
-                class="mb-3 px-2 py-1.5 mb-3 mt-1 block w-full px-2 py-1.5 border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
-                type="number"
-                name="birthdayAge"
-                placeholder="Año"
-              /> -->
-              <div v-if="endGame">
-                <h1>Terminaste el juego</h1>
-                <label for=""
-                  >Ingresa tu nombre, gracias por completar el juego</label
-                >
-                <input type="text" name="user" />
-              </div>
 
               <button
                 class="px-4 py-1.5 rounded-md shadow-lg bg-gradient-to-r from-pink-600 to-red-600 font-medium text-gray-100 block transition duration-300"
               >
-                <span class="hidden">Sending :)</span>
                 <span v-on:click="checkMinorMajor">PLay</span>
+              </button>
+            </div>
+            <div
+              id="login_form"
+              class="relative flex flex-col justify-center"
+              v-if="endGame"
+            >
+              <div
+                data-tooltip-target="tooltip-default"
+                class="absolute -right-0 -top-6 inline-flex items-center self-start transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 text-blue-600 hover:text-blue-700 transition duration-150 ease-in-out"
+                data-bs-toggle="tooltip"
+                title="Ayudanos a nutrir nuestra base de datos ingresando tu enviando tus datos de juego: Nombre y número de intentos"
+              >
+                <img src="./img/hint.svg" alt="" width="25" />
+              </div>
+              <label class="text-sm font-medium">Nombre</label>
+              <input
+                v-model="name"
+                name="name"
+                id="name"
+                class="mb-3 px-2 py-1.5 mb-3 mt-1 block w-full px-2 py-1.5 border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
+              />
+              <label class="text-sm font-medium">Número Intentos</label>
+              <input
+                class="mb-3 px-2 py-1.5 mb-3 mt-1 block w-full px-2 py-1.5 border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 focus:invalid:border-red-500 focus:invalid:ring-red-500"
+                type="number"
+                name="birthdayAge"
+                :placeholder="attempts.length"
+                disabled="disabled"
+              />
+              <button
+                class="px-4 py-1.5 rounded-md shadow-lg bg-gradient-to-r from-pink-600 to-red-600 font-medium text-gray-100 block transition duration-300"
+              >
+                <span v-on:click="saveUser">Enviar</span>
               </button>
             </div>
           </div>
         </section>
       </div>
     </div>
-    <!--  
-    <script src="utils.js"></script> -->
     <script src="main.js"></script>
   </body>
 </html>

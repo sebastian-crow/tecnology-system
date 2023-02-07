@@ -9,6 +9,8 @@ createApp({
       major: "",
       attempts: [],
       endGame: false,
+      name: "",
+      players: [],
       hint: "Obten un pista despues de dos intentos",
       anyo: undefined,
       mensaje: "",
@@ -194,24 +196,26 @@ createApp({
       }
 
       // Finalgame message
-      if (this.attempts.length >= 7) {
+      if (this.attempts.length === 7) {
         this.endGame = true;
       }
+    },
+    saveUser() {
+      const user = [
+        ...this.players,
+        {
+          id: Date.now(),
+          name: this.name,
+          attempts: this.attempts.length,
+        },
+      ];
 
-      console.log(this.attempts.length);
-      console.log("Working goo");
+      localStorage.setItem("userRiddle", JSON.stringify(user));
     },
   },
   mounted() {
-    let registro = JSON.parse(localStorage.getItem("registro"));
-
-    if (registro === null) {
-      this.jugadores = [];
-    } else {
-      this.jugadores = registro;
-    }
+    this.players = JSON.parse(localStorage.getItem("userRiddle"));
     this.populateYears();
     this.anyoNacimiento();
-    console.log(this.selectYear);
   },
 }).mount("#root");
