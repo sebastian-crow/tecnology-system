@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/sebastian-crow/tecnology-system.git"><img src="" alt="Tecnology System Apps" width="400"></a>
+  <a href="https://github.com/sebastian-crow/tecnology-system.git"><img src="preview.jpeg" alt="Tecnology System Apps" width="400"></a>
   <br>
   Tecnology System
   <br>
