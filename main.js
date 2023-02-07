@@ -36,8 +36,10 @@ createApp({
       intento: 0,
       fin: false,
       anyoIngresado: undefined,
-      pista: undefined,
-      persona: undefined
+      persona: undefined,
+      iniciar: false,
+      finalizar: false,
+      mensajeInicial: ''
     };
 
   },
@@ -45,10 +47,12 @@ createApp({
 
     // tomar año de nacimiento aleatorio del array personas
     anyoNacimiento() {
-      const r = Math.floor(Math.random() * 5)
+      const r = Math.floor(Math.random() * 5);
       this.persona = this.personas[r];
       this.anyo = this.personas[r].año;
+      this.mensajeInicial = 'vamos!!!';
       console.log(this.anyo);
+      console.log(this.jugadores);
     },
 
     /*
@@ -64,6 +68,7 @@ createApp({
     validarAcierto() {
       if (this.anyoIngresado == this.anyo) {
         console.log('acertaste');
+
         this.anyoNacimiento();
       } else {
         this.darPista();
@@ -82,33 +87,33 @@ createApp({
 
       if (edad <= 10) {
         if (rango < 5) {
-          this.pista = 'Es un niño y estas muy cerca';
+          this.mensaje = 'Es un niño y estas muy cerca';
         } else {
-          this.pista = 'Es un niño';
+          this.mensaje = 'Es un niño';
         }
       }
 
       if (edad > 10 && edad <= 17) {
         if (rango < 5) {
-          this.pista = 'Es un adolescente y estas muy cerca';
+          this.mensaje = 'Es un adolescente y estas muy cerca';
         } else {
-          this.pista = 'Es un adolescente';
+          this.mensaje = 'Es un adolescente';
         }
       }
 
       if (edad > 17 && edad < 60) {
         if (rango < 5) {
-          this.pista = 'Es un adulto y estas muy cerca';
+          this.mensaje = 'Es un adulto y estas muy cerca';
         } else {
-          this.pista = 'Es un adulto';
+          this.mensaje = 'Es un adulto';
         }
       }
 
       if (edad >= 60) {
         if (rango < 5) {
-          this.pista = 'Es un anciano y estas muy cerca';
+          this.mensaje = 'Es un anciano y estas muy cerca';
         } else {
-          this.pista = 'Es un anciano';
+          this.mensaje = 'Es un anciano';
         }
       }
     },
@@ -119,7 +124,8 @@ createApp({
     
     **/
     validar() {
-
+      console.log('d-' + this.intento)
+      this.mensajeInicial = '';
       if (this.intento <= 6) {
 
         if (this.anyoIngresado == undefined || this.anyoIngresado == '') {
@@ -142,17 +148,19 @@ createApp({
           //aumentamos el contador de intentos
           this.intento++;
 
-
         }
-        else if ((this.anyoIngresado > this.anyo || this.anyoIngresado < this.anyo) && this.intento > 1) {
+        else if ((this.anyoIngresado > this.anyo || this.anyoIngresado < this.anyo) && this.intento >= 1) {
           this.intento++;
           this.darPista();
         }
         else {
           //el año digitado es igual al escogido.
-          this.mensaje = "correcto"
+          this.mensaje = "correcto, ve por otro"
           console.log(this.mensaje)
           //guardar el dato
+          if (this.intento == 0) {
+            this.intento = 1;
+          }
           this.intentos.push(
             {
               'nombre': this.persona.nombre,
@@ -166,55 +174,88 @@ createApp({
           //guardar en el local storage despues del 5to año adivinado
           console.log(this.intentos.length)
           if (this.intentos.length > 4) {
-            this.jugadores.push(
-              {
-                'nombre': this.nombre,
-                'intentos': this.intentos
-              }
-            )
-            this.mensaje = " juego terminado"
-            console.log(this.mensaje)
-            localStorage.setItem('registro', JSON.stringify(this.jugadores))
-            this.intentos = []
+            // this.jugadores.push(
+            //   {
+            //     'nombre': this.nombre,
+            //     'intentos': this.intentos
+            //   }
+            // )
+            this.finalizar = true;
+            this.mensaje = " juego terminado";
+            // console.log(this.mensaje)
+            // localStorage.setItem('registro', JSON.stringify(this.jugadores))
+            // this.intentos = []
           }
           //seteamos el intento
-          this.intento = 0;
-          this.intentos = [];
+          // this.intento = 0;
+          // this.intentos = [];
           this.anyoNacimiento()
 
         }
 
-        this.intento++;
+        // this.intento++;
 
 
       } else {
         //el intento es mayor a 7
         this.mensaje = "juego terminado"
         console.log(this.mensaje)
-        this.intentos.push(
-          {
-            'nombre': this.persona.nombre,
-            'intento': this.intento
-          }
-        )
-        this.jugadores.push(
-          {
-            'nombre': this.nombre,
-            'intentos': this.intentos
-          }
-        )
+        this.finalizar = true;
+        // this.finalizar = true;
+        // this.intentos.push(
+        //   {
+        //     'nombre': this.persona.nombre,
+        //     'intento': this.intento
+        //   }
+        // )
+        // this.jugadores.push(
+        //   {
+        //     'nombre': this.nombre,
+        //     'intentos': this.intentos
+        //   }
+        // )
 
-        localStorage.setItem('registro', JSON.stringify(this.jugadores))
+        // localStorage.setItem('registro', JSON.stringify(this.jugadores))
 
-        this.intento = 0;
-        this.intentos = [];
-        this.fin = true
+        // this.intento = 0;
+        // this.intentos = [];
+        // this.fin = true
 
       }
+    },
+
+    guardar() {
+
+      this.intentos.push(
+        {
+          'nombre': this.persona.nombre,
+          'intento': this.intento
+        }
+      )
+
+      this.jugadores.push(
+        {
+          'nombre': this.nombre,
+          'intentos': this.intentos
+        }
+      )
+
+      localStorage.setItem('registro', JSON.stringify(this.jugadores))
+      this.mensaje = 'Guardado!!!';
+
+      this.intento = 0;
+      this.intentos = [];
+      this.fin = true
+
+    },
+    nuevoJuego() {
+      this.finalizar = false;
+      this.anyoIngresado = undefined;
+
+      this.mensaje = '';
+      this.nombre = '';
+      this.anyoNacimiento();
     }
-
-
-
   },
 
 

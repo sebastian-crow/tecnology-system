@@ -1,16 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tecnology System Game</title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  </head>
-  <body>
-    <div id="root">
-        <h1>{{ helloWorld }}</h1>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tecnology System Game</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="root">
+
+    <div class="container  text-center pt-4">
+      <div class="row justify-content-center m-2">
+        <div class="col">
+          <div class="card" style="width: 18rem;">
+            <button @click="anyoNacimiento" class="btn btn-primary m-4">Generar numero</button>
+
+            <h2 v-text="mensaje"></h2>
+            <h2 v-text="mensajeInicial"></h2>
+
+
+            <div class="card-body">
+
+              <input type="text" class="mt-2" aria-describedby="emailHelp" v-model="nombre"
+                placeholder="danos tu nombre" v-if="finalizar">
+              <button class="btn btn-primary m-2" @click="guardar" v-if="finalizar">Guardar</button>
+
+              <button class="btn btn-primary m-2" @click="nuevoJuego" v-if="finalizar">Volver a jugar</button>
+
+              <input type="number" aria-describedby="emailHelp" class="mt-2" v-model="anyoIngresado" v-if="!finalizar">
+              <button class="btn btn-primary mt-2" @click="validar" v-if="!finalizar">Intentar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row ">
+        <div class="col">
+
+          <div class="card m-2" style="width: 18rem;" v-for="reg of jugadores">
+
+            <h1>{{ reg.nombre }}</h1>
+
+            <div class="card-body">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Persona</th>
+                    <th>Intentos</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr v-for="intento of reg.intentos">
+                    <td>{{ intento.nombre }}</td>
+                    <td>{{ intento.intento }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <script src="main.js"></script>
-  </body>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+  <script src="main.js"></script>
+</body>
+
 </html>
