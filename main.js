@@ -11,6 +11,7 @@ createApp({
       endGame: false,
       name: "",
       players: [],
+      gameDescription: true,
       hint: "Obten un pista despues de dos intentos",
       anyo: undefined,
       mensaje: "",
@@ -185,6 +186,7 @@ createApp({
     checkMinorMajor() {
       this.minor = parseInt(this.selectYear) < this.anyo ? true : false;
       this.major = parseInt(this.selectYear) > this.anyo ? true : false;
+      this.gameDescription = false;
       this.attempts.push("attempt");
       /* alert(`Minor: ${this.minor} Major: ${this.major}`);
        */
@@ -201,17 +203,31 @@ createApp({
       }
     },
     saveUser() {
-      const user = [
-        ...this.players,
-        {
-          id: Date.now(),
-          name: this.name,
-          attempts: this.attempts.length,
-        },
-      ];
-
-      localStorage.setItem("userRiddle", JSON.stringify(user));
-      window.reload();
+      if (this.name !== "") {
+        let user = [];
+        if (this.players?.length > 0) {
+          user = [
+            ...this.players,
+            {
+              id: Date.now(),
+              name: this.name,
+              attempts: this.attempts.length,
+            },
+          ];
+        } else {
+          user = [
+            {
+              id: Date.now(),
+              name: this.name,
+              attempts: this.attempts.length,
+            },
+          ];
+        }
+        localStorage.setItem("userRiddle", JSON.stringify(user));
+        location.reload();
+      } else {
+        alert("Por favor ingresa tú nombre para poder continuar");
+      }
     },
   },
   mounted() {
@@ -220,7 +236,3 @@ createApp({
     this.anyoNacimiento();
   },
 }).mount("#root");
-
-
-// 35 en total
-// si en el primer anyo se comio
