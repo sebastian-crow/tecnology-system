@@ -60,7 +60,8 @@
                     />
                   </svg>
                   <span class="font-bold text-gray-900">
-                    Año {{ selectYear }}</span
+                    <code v-show="major">></code>
+                    <code v-show="minor"><</code> {{ selectYear }}</span
                   >
                 </div>
                 <div

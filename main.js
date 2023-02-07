@@ -186,8 +186,8 @@ createApp({
       this.minor = parseInt(this.selectYear) < this.anyo ? true : false;
       this.major = parseInt(this.selectYear) > this.anyo ? true : false;
       this.attempts.push("attempt");
-      alert(`Minor: ${this.minor} Major: ${this.major}`);
-
+      /* alert(`Minor: ${this.minor} Major: ${this.major}`);
+ */
       // Hint if attempts > 2
       if (this.attempts.length >= 2) {
         this.hint = `Tú año de nacimiento está entre ${this.anyo - 10} y ${
